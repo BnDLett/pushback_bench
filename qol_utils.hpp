@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 #include <string>
 #include <algorithm>
+#include "methods.hpp"
 using namespace std::chrono;
 using namespace std;
 
@@ -42,6 +43,14 @@ string input(string to_print = "") {
   return s;
 }
 
+string return_exit(bool allow_exit, bool use_str = 1) {
+  if (allow_exit && use_str) {
+    return " (type \"exit\" to exit)";
+  } else {
+    return "";
+  }
+}
+
 int clear_terminal(bool no_clear = 0) {
   if (no_clear) {return 0;}
   #if defined(__linux__)
@@ -50,6 +59,29 @@ int clear_terminal(bool no_clear = 0) {
   #endif
   system("cls");
   return 0;
+}
+
+vector<int> get_res(bool allow_exit = 0, bool use_exit_str = 1, int tests = 0, float avg = 0) {
+  string horizontal, vertical;
+  string exit_str = return_exit(allow_exit, use_exit_str);
+  string hin_output = "Horizontal resolution" + exit_str + ":\n> "; // (h)orizontal (in)put output
+
+  horizontal = input(hin_output);
+  if (horizontal != "exit") {
+    clear_terminal();
+    print_key(tests, avg);
+    vertical = input("Vertical resolution:\n> ");
+  }
+  if (allow_exit && contains_str({horizontal, vertical}, "exit")) {
+    clear_terminal();
+    exit(0);
+  }
+
+  int horizontal_int = stoi(horizontal);
+  int vertical_int = stoi(vertical);
+
+  vector<int> resolution = {horizontal_int, vertical_int};
+  return resolution;
 }
 
 string lower_string(string to_convert) {
